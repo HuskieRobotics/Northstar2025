@@ -50,4 +50,11 @@ Development Notes
     * I converted the string passed through NT to an integer and it works
     * I also had an issue where reading from NT didn't return values immediately after subscribing.
     * I added a check for an empty camera device ID and to exit the get_frame method
+* switch to using AVFoundationCapture
+    * have to specify device id as follows: "0x110000:0c45:6366"
+        * no leading 0s for the camera location
+        * no "0x" for the vendor or product ID
+        * letters must be lowercase
+    * set the gain to 0
+    * frame rate increased to 50 fps from 16 fps
 
