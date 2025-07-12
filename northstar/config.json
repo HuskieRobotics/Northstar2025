@@ -4,9 +4,9 @@
   "apriltags_stream_port": 8000,
   "objdetect_stream_port": 8001,
   "capture_impl": "avfoundation",
-  "obj_detect_model": "",
+  "obj_detect_model": "models/coral_v1_grayscale.mlmodel",
   "obj_detect_max_fps": -1,
   "apriltags_enable": true,
-  "objdetect_enable": false,
+  "objdetect_enable": true,
   "video_folder": "./videos/"
 }
