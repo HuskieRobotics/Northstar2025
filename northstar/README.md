@@ -58,5 +58,6 @@ Development Notes
     * set the gain to 0
     * frame rate increased to 50 fps from 16 fps
 * installed ffmpeg using homebrew for frame capture
-* 
+* shouldn't have committed the models to GitHub as they are large; will remove
+    * they are available here: https://drive.google.com/drive/folders/1l3Bx3FGBGiY3hcpaPtvrNNPMZHChCi9w
 
