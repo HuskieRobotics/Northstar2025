@@ -18,6 +18,7 @@ cap = find_camera(0x0C45, 0x6366)
 while True:
     result, frame = cap.read()
     if not result:
+        print("Failed to capture frame")
         break
     cv2.imshow('frame', frame)
     if cv2.waitKey(1) == ord('q'):

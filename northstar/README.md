@@ -57,4 +57,6 @@ Development Notes
         * letters must be lowercase
     * set the gain to 0
     * frame rate increased to 50 fps from 16 fps
+* installed ffmpeg using homebrew for frame capture
+* 
 
