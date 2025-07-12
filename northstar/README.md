@@ -42,4 +42,12 @@ Development Notes
 * still trying to figure out how to calibrate the camera; I may need to do the above first, regardless
     * it appears that you set "calibration" to true in NT under the northstar key
     * you capture frames by setting "capture_flag" to true in NT under the same key
+    * calibration server runs on port 7999
+* struggled to get the VideoCapture to work
+    * For DefaultCapture, a string is passed to VideoCapture; however, I believe it should be an integer
+        * I'm not sure how this is working for 6328. Maybe they don't use DefaultCapture.,
+        * Upon further investigation, they are using Basler cameras; so, maybe they are using PylonCapture
+    * I converted the string passed through NT to an integer and it works
+    * I also had an issue where reading from NT didn't return values immediately after subscribing.
+    * I added a check for an empty camera device ID and to exit the get_frame method
 

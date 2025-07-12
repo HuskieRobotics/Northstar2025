@@ -66,7 +66,11 @@ class DefaultCapture(Capture):
             self._video = None
 
         if self._video == None:
-            self._video = cv2.VideoCapture(config_store.remote_config.camera_id)
+            print("camera_id: ", config_store.remote_config.camera_id)
+            if config_store.remote_config.camera_id == "":
+                print("No camera ID, waiting to start capture session")
+                return False, None
+            self._video = cv2.VideoCapture(int(config_store.remote_config.camera_id))
             self._video.set(cv2.CAP_PROP_FRAME_WIDTH, config_store.remote_config.camera_resolution_width)
             self._video.set(cv2.CAP_PROP_FRAME_HEIGHT, config_store.remote_config.camera_resolution_height)
             self._video.set(cv2.CAP_PROP_AUTO_EXPOSURE, config_store.remote_config.camera_auto_exposure)

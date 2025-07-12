@@ -76,6 +76,7 @@ if __name__ == "__main__":
     last_image_observations: List[FiducialImageObservation] = []
     last_objdetect_observations: List[ObjDetectObservation] = []
     video_frame_cache: List[cv2.Mat] = []
+
     while True:
         remote_config_source.update(config)
         timestamp = time.time()
@@ -99,6 +100,7 @@ if __name__ == "__main__":
 
         # Exit if no frame
         if not success:
+            print ("No frame received, waiting for capture")
             time.sleep(0.5)
             continue
 
