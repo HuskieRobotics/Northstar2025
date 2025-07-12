@@ -28,7 +28,7 @@ from pipeline.Capture import CAPTURE_IMPLS
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", default="config.json")
-    parser.add_argument("--calibration", default="calibration.json")
+    parser.add_argument("--calibration", default="calibration.yml")
     args = parser.parse_args()
 
     config = ConfigStore(LocalConfig(), RemoteConfig())
