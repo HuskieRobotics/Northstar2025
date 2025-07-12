@@ -22,9 +22,9 @@ class CalibrationSession:
     NEW_CALIBRATION_FILENAME = "calibration_new.yml"
 
     def __init__(self) -> None:
-        self._aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_5X5_1000)
+        self._aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_1000)
         self._aruco_params = cv2.aruco.DetectorParameters()
-        self._charuco_board = cv2.aruco.CharucoBoard((12, 9), 0.030, 0.023, self._aruco_dict)
+        self._charuco_board = cv2.aruco.CharucoBoard((8, 8), 0.0254, 0.01905, self._aruco_dict)
 
     def process_frame(self, image: cv2.Mat, save: bool) -> None:
         # Get image size
