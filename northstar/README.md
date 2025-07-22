@@ -60,4 +60,14 @@ Development Notes
 * installed ffmpeg using homebrew for frame capture
 * shouldn't have committed the models to GitHub as they are large; will remove
     * they are available here: https://drive.google.com/drive/folders/1l3Bx3FGBGiY3hcpaPtvrNNPMZHChCi9w
+* run the AppleScript file from the terminal:
+    * osascript northstar_launch.scpt
+
+
+Future Work
+===
+* I'm using the CoreML models provided by 6328.
+* We should learn how to create our own CoreML models.
+    * [This example](https://apple.github.io/coremltools/docs-guides/source/introductory-quickstart.html) may be helpful.
+    
 
