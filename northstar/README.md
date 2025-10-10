@@ -63,9 +63,56 @@ Development Notes
 * run the AppleScript file from the terminal:
     * osascript northstar_launch.scpt
 
+Mac mini Configuration
+===
+* purchased 2024 Mac mini (MU9D3LL/A)
+* System Settings -> Energy -> Start up automatically after a power failure
+    * this will auto power on the Mac mini when the robot is turned on
+* Update to macOS Sequoia 15.7.1
+* Download and install Pylon 25.09 from Basler for cameras
+* Download and install GitHub Desktop
+* Download and install VS Code
+* Download and install xCode; accept license agreement
+* install Python 3.12.10
+    * latest version supported by Core ML Tool 8.1
+* create virtual environment in this folder
+    * python3 -m venv venv
+    * source ./venv/bin/activate
+    * pip install -r requirements.txt
+* Download and install homebrew
+* install ffmpeg using homebrew for frame capture
+    * brew install ffmpeg
+* download cmake 3.31.8 source and build in terminal based on README
+* build reenumerate (from ./reenumerate)
+    * make
+* test reenumerate
+    * ./reenumerate -v 0x0C45,0x6366
+        * where 0x0C45 is vendorID and 0x6366 is productID
+        * output displays the location ID; for example:
+            * Found "Arducam OV2311 USB Camera" @ 0x00110000
+    * try to reenumerate camera using location ID:
+        * ./reenumerate -v -l 0x00110000
+        * this is done in the northstar_launch.scpt before running the main python file
+
+
+Cameras
+===
+* Basler daA1920-160um
+    * ID: 40686739
+    * vendor ID: 0x2676
+    * product ID: 0xba06
+    * location: 0x03200000
+* Basler da1280-54uc
+    * ID: 25249734
+    * vendor ID: 0x2676
+    * product ID: 0xba03
+    * location: 0x00200000
+
 
 Future Work
 ===
+* explore camera configuration once lenses arrive
+* calibrate cameras
 * I'm using the CoreML models provided by 6328.
 * We should learn how to create our own CoreML models.
     * [This example](https://apple.github.io/coremltools/docs-guides/source/introductory-quickstart.html) may be helpful.
