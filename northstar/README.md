@@ -93,7 +93,15 @@ Mac mini Configuration
     * try to reenumerate camera using location ID:
         * ./reenumerate -v -l 0x00110000
         * this is done in the northstar_launch.scpt before running the main python file
-
+* pylon Viewer
+    * https://docs.baslerweb.com/overview-of-the-pylon-viewer
+    * camera -> automatic image adjustment
+        * sets configuration automatically
+        * this should be done as part of field calibration
+        * https://docs.baslerweb.com/automatic-image-adjustment.html
+    * toolbar -> open sharpness indicator
+        * focus the camera and set the stop nut to preserve focus
+        * https://docs.baslerweb.com/sharpness-indicator
 
 Cameras
 ===
