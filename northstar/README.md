@@ -98,6 +98,7 @@ Mac mini Configuration
     * camera -> automatic image adjustment
         * sets configuration automatically
         * this should be done as part of field calibration
+        * the gain and expsure settings are in the Features - All -> Analog Control and Acquisition Control
         * https://docs.baslerweb.com/automatic-image-adjustment.html
     * toolbar -> open sharpness indicator
         * focus the camera and set the stop nut to preserve focus
@@ -105,22 +106,22 @@ Mac mini Configuration
 
 Cameras
 ===
+* Basler da1280-54uc
+    * ID: 25249734 (serial number from Pylon app)
+    * vendor ID: 0x2676
+    * product ID: 0xba03
+    * location: 0x03200000
 * Basler daA1920-160um
     * ID: 40686739
     * vendor ID: 0x2676
     * product ID: 0xba06
-    * location: 0x03200000
-* Basler da1280-54uc
-    * ID: 25249734
-    * vendor ID: 0x2676
-    * product ID: 0xba03
     * location: 0x00200000
 
 
 Future Work
 ===
-* explore camera configuration once lenses arrive
-* calibrate cameras
+* √ explore camera configuration once lenses arrive
+* √ calibrate cameras
 * I'm using the CoreML models provided by 6328.
 * We should learn how to create our own CoreML models.
     * [This example](https://apple.github.io/coremltools/docs-guides/source/introductory-quickstart.html) may be helpful.
