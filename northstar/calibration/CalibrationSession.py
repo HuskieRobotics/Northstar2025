@@ -64,6 +64,7 @@ class CalibrationSession:
         if retval:
             calibration_store = cv2.FileStorage(self.NEW_CALIBRATION_FILENAME, cv2.FILE_STORAGE_WRITE)
             calibration_store.write("calibration_date", str(datetime.datetime.now()))
+            calibration_store.write("mean_reprojection_error", str(retval))
             calibration_store.write("camera_resolution", self._imsize)
             calibration_store.write("camera_matrix", camera_matrix)
             calibration_store.write("distortion_coefficients", distortion_coefficients)

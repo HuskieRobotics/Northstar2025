@@ -122,6 +122,7 @@ Future Work
 ===
 * √ explore camera configuration once lenses arrive
 * √ calibrate cameras
+* check performance of using pylon-cropped (need to update 3061-lib for new resolution as well)
 * I'm using the CoreML models provided by 6328.
 * We should learn how to create our own CoreML models.
     * [This example](https://apple.github.io/coremltools/docs-guides/source/introductory-quickstart.html) may be helpful.
