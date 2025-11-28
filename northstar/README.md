@@ -125,5 +125,7 @@ Future Work
 * I'm using the CoreML models provided by 6328.
 * We should learn how to create our own CoreML models.
     * [This example](https://apple.github.io/coremltools/docs-guides/source/introductory-quickstart.html) may be helpful.
+* get rid of poseestimation and taganglecalculator pipelines
+
     
 
