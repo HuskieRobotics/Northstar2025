@@ -1,0 +1,12 @@
+{
+  "device_id": "northstar_2",
+  "server_ip": "192.168.1.191",
+  "apriltags_stream_port": 8004,
+  "objdetect_stream_port": 8005,
+  "capture_impl": "pylon",
+  "obj_detect_model": "models/coral_v1_grayscale.mlmodel",
+  "obj_detect_max_fps": -1,
+  "apriltags_enable": true,
+  "objdetect_enable": true,
+  "video_folder": "./videos/"
+}
