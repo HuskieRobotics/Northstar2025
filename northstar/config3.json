@@ -1,5 +1,5 @@
 {
-  "device_id": "northstar_3",
+  "device_id": "northstar_???",
   "server_ip": "192.168.1.191",
   "apriltags_stream_port": 8006,
   "objdetect_stream_port": 8007,
