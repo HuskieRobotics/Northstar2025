@@ -106,30 +106,36 @@ Mac mini Configuration
 
 Cameras
 ===
-* Basler da1280-54uc
-    * config0.json
-    * ID: 25249734 (serial number from Pylon app)
-    * vendor ID: 0x2676
-    * product ID: 0xba03
-    * location: 0x03200000
 * Basler daA1920-160um
-    * config1.json
+    * config0.json
     * ID: 40686739
     * vendor ID: 0x2676
     * product ID: 0xba06
     * location: 0x00200000
 * Basler daA1920-160um
-    * config2.json
+    * config1.json
     * ID: 40708569
     * vendor ID: 0x2676
     * product ID: 0xba06
     * location: 0x02210000
 * Basler daA1920-160um
-    * config3.json
+    * config2.json
     * ID: 40708556
     * vendor ID: 0x2676
     * product ID: 0xba06
     * location: 0x02210000
+* Basler daA1920-160um
+    * config3.json
+    * ID: ???
+    * vendor ID: 0x2676
+    * product ID: 0xba06
+    * location: 0x02210000
+* Basler da1280-54uc
+    * config4.json
+    * ID: 25249734 (serial number from Pylon app)
+    * vendor ID: 0x2676
+    * product ID: 0xba03
+    * location: 0x03200000
 
 
 Future Work
