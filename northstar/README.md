@@ -111,31 +111,31 @@ Cameras
     * ID: 40686739
     * vendor ID: 0x2676
     * product ID: 0xba06
-    * location: 0x00200000
+    * location: 0x01200000
 * Basler daA1920-160um
     * config1.json
     * ID: 40708569
     * vendor ID: 0x2676
     * product ID: 0xba06
-    * location: 0x02210000
+    * location: 0x00200000
 * Basler daA1920-160um
     * config2.json
     * ID: 40708556
     * vendor ID: 0x2676
     * product ID: 0xba06
-    * location: 0x02210000
+    * location: 0x03200000
 * Basler daA1920-160um
     * config3.json
-    * ID: ???
+    * ID: 40708542
     * vendor ID: 0x2676
     * product ID: 0xba06
-    * location: 0x02210000
+    * location: 0x02220000
 * Basler da1280-54uc
     * config4.json
     * ID: 25249734 (serial number from Pylon app)
     * vendor ID: 0x2676
     * product ID: 0xba03
-    * location: 0x03200000
+    * location: 0x02210000
 
 
 Future Work
