@@ -79,8 +79,8 @@ if __name__ == "__main__":
 
     while True:
         remote_config_source.update(config)
-        timestamp = time.time()
         success, image = capture.get_frame(config)
+        timestamp = time.time()
 
         # Start and stop recording
         should_record = (
