@@ -4,7 +4,7 @@
   "apriltags_stream_port": 8008,
   "objdetect_stream_port": 8009,
   "capture_impl": "pylon-color",
-  "obj_detect_model": "models/algae_v2.mlmodel",
+  "obj_detect_model": "models/wave_fuel_detect.mlpackage",
   "obj_detect_max_fps": -1,
   "apriltags_enable": true,
   "objdetect_enable": true,
