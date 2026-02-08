@@ -108,35 +108,94 @@ Cameras
 ===
 * Basler daA1920-160um
     * config0.json
+    * calibration40686739
     * ID: 40686739
     * vendor ID: 0x2676
     * product ID: 0xba06
     * location: 0x01200000
 * Basler daA1920-160um
     * config1.json
+    * calibration40708569
     * ID: 40708569
     * vendor ID: 0x2676
     * product ID: 0xba06
     * location: 0x00200000
 * Basler daA1920-160um
     * config2.json
+    * calibration40708556
     * ID: 40708556
     * vendor ID: 0x2676
     * product ID: 0xba06
     * location: 0x03200000
 * Basler daA1920-160um
     * config3.json
+    * calibration40708542
     * ID: 40708542
     * vendor ID: 0x2676
     * product ID: 0xba06
     * location: 0x02220000
 * Basler da1280-54uc
     * config4.json
+    * calibration25249734
     * ID: 25249734 (serial number from Pylon app)
     * vendor ID: 0x2676
     * product ID: 0xba03
     * location: 0x02210000
 
+Fall 2025 Practice Bot Configuration
+===
+* FR
+    * Basler daA1920-160um
+    * config0.json
+    * configFR.json
+    * calibration0.json
+    * calibration40686739.json
+    * ID: 40686739
+    * vendor ID: 0x2676
+    * product ID: 0xba06
+    * location: 0x01200000
+* BR
+    * Basler daA1920-160um
+    * config3.json
+    * calibration1.json (!!! should be calibration3.json)
+    * calibration40708542.json
+    * ID: 40708542
+    * vendor ID: 0x2676
+    * product ID: 0xba06
+    * location: 0x02220000
+* FL
+    * Basler daA1920-160um
+    * config2.json
+    * calibration2.json
+    * calibration40708556.json
+    * ID: 40708556
+    * vendor ID: 0x2676
+    * product ID: 0xba06
+    * location: 0x03200000
+* center (really BL)
+    * Basler da1280-54uc
+    * config4.json
+    * calibration4.json
+    * calibration25249734.json
+    * ID: 25249734 (serial number from Pylon app)
+    * vendor ID: 0x2676
+    * product ID: 0xba03
+    * location: 0x02210000
+* not installed
+    * Basler daA1920-160um
+    * config1.json
+    * calibration1.json
+    * calibration40708569.json
+    * ID: 40708569
+    * vendor ID: 0x2676
+    * product ID: 0xba06
+    * location: 0x00200000
+
+Pose Debugging Ideas
+===
+* associate the camera with the proper calibration file
+* change the resolution of mono cameras to 1600x1200
+* calibrate all of the cameras
 
 Future Work
 ===
