@@ -24,6 +24,7 @@ from output.StreamServer import MjpegServer, StreamServer
 from output.overlay_util import *
 from output.VideoWriter import FFmpegVideoWriter, VideoWriter
 from pipeline.Capture import CAPTURE_IMPLS
+from power_metrics import run_power_metrics
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -66,6 +67,26 @@ if __name__ == "__main__":
     ntcore.NetworkTableInstance.getDefault().setServer(config.local_config.server_ip)
     ntcore.NetworkTableInstance.getDefault().startClient4(config.local_config.device_id)
 
+    # Power metrics configuration
+    POWER_METRICS_INTERVAL = 1  # seconds
+
+    # Power metrics thread setup
+    latest_power_metrics = None
+    power_metrics_lock = threading.Lock()
+    power_metrics_last_publish = 0
+
+    def power_metrics_worker():
+        """Background worker thread that periodically collects power metrics."""
+        global latest_power_metrics
+        while True:
+            time.sleep(POWER_METRICS_INTERVAL)
+            metrics = run_power_metrics()
+            with power_metrics_lock:
+                latest_power_metrics = metrics
+
+    power_metrics_thread = threading.Thread(target=power_metrics_worker, daemon=True)
+    power_metrics_thread.start()
+
     apriltags_frame_count = 0
     apriltags_last_print = 0
     objdetect_next_frame = -1
@@ -81,6 +102,18 @@ if __name__ == "__main__":
         remote_config_source.update(config)
         success, image = capture.get_frame(config)
         timestamp = time.time()
+
+        # Check power metrics from background thread
+        if time.time() - power_metrics_last_publish > POWER_METRICS_INTERVAL:
+            with power_metrics_lock:
+                if latest_power_metrics is not None:
+                    metrics = latest_power_metrics
+                    output_publisher.send_power_metrics(config, timestamp, metrics)
+                    power_metrics_last_publish = time.time()
+                    if metrics:
+                        print(f"Power Metrics - CPU: {metrics['cpu_power']}, GPU: {metrics['gpu_power']}, ANE: {metrics['ane_power']}, Pressure: {metrics['pressure_level']}")
+
+
 
         # Start and stop recording
         should_record = (

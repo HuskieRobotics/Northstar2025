@@ -31,10 +31,11 @@ class OutputPublisher:
         raise NotImplementedError
 
     def send_objdetect_observation(
-        self, config_store: ConfigStore, timestamp: float, observations: List[ObjDetectObservation]
-    ) -> None:
+        self, config_store: ConfigStore, timestamp: float, observations: List[ObjDetectObservation]) -> None:
         raise NotImplementedError
 
+    def send_power_metrics(self, config_store: ConfigStore, timestamp: float, power_data: dict) -> None:
+        raise NotImplementedError
 
 class NTOutputPublisher(OutputPublisher):
     _init_complete: bool = False
@@ -43,7 +44,7 @@ class NTOutputPublisher(OutputPublisher):
     _apriltags_fps_pub: ntcore.IntegerPublisher
     _objdetect_fps_pub: ntcore.IntegerPublisher
     _objdetect_observations_pub: ntcore.DoubleArrayPublisher
-
+    _power_metrics_pub: ntcore.DoubleArrayPublisher
     def _check_init(self, config: ConfigStore):
         # Initialize publishers on first call
         if not self._init_complete:
@@ -61,6 +62,9 @@ class NTOutputPublisher(OutputPublisher):
             self._objdetect_fps_pub = nt_table.getIntegerTopic("fps_objdetect").publish()
             self._objdetect_observations_pub = nt_table.getDoubleArrayTopic("objdetect_observations").publish(
                 ntcore.PubSubOptions(periodic=0.01, sendAll=True, keepDuplicates=True)
+            )
+            self._power_metrics_pub = nt_table.getDoubleArrayTopic("power_metrics").publish(
+                ntcore.PubSubOptions(periodic=1.0, sendAll=True, keepDuplicates=True)
             )
 
     def send_apriltag_fps(self, config_store: ConfigStore, timestamp: float, fps: int) -> None:
@@ -144,3 +148,25 @@ class NTOutputPublisher(OutputPublisher):
                 observation_data.append(angle)
 
         self._objdetect_observations_pub.set(observation_data, math.floor(timestamp * 1000000))
+    
+    def send_power_metrics(self, config_store: ConfigStore, timestamp: float, power_data: dict) -> None:
+        self._check_init(config_store)
+
+        power_metrics_data: List[float] = [
+            float(power_data.get("cpu_power", 0)),
+            float(power_data.get("gpu_power", 0)),
+            float(power_data.get("ane_power", 0)),
+        ]
+        pressure_level = power_data.get("pressure_level", "Unknown")
+        if pressure_level == "Nominal":
+            power_metrics_data.append(0)
+        elif pressure_level == "Fair":
+            power_metrics_data.append(1)
+        elif pressure_level == "Serious":
+            power_metrics_data.append(2)
+        elif pressure_level == "Critical":
+            power_metrics_data.append(3)
+        else:
+            power_metrics_data.append(-1)
+
+        self._power_metrics_pub.set(power_metrics_data, math.floor(timestamp * 1000000))
