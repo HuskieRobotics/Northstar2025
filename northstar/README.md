@@ -196,7 +196,10 @@ Fall 2025 Practice Bot Configuration
 
 Pose Debugging Ideas
 ===
+* pull the latest code
+* export the AppleScript
 * associate the camera with the proper calibration file
+* calibrate all of the cameras
 * change the resolution of mono cameras to 1600x1200
 * calibrate all of the cameras
 
