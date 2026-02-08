@@ -7,6 +7,6 @@
   "obj_detect_model": "models/coral_v1_grayscale.mlmodel",
   "obj_detect_max_fps": -1,
   "apriltags_enable": true,
-  "objdetect_enable": true,
+  "objdetect_enable": false,
   "video_folder": "./videos/"
 }

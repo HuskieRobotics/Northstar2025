@@ -157,6 +157,7 @@ Fall 2025 Practice Bot Configuration
 * BR
     * Basler daA1920-160um
     * config3.json
+    * configBR.json
     * calibration1.json (!!! should be calibration3.json)
     * calibration40708542.json
     * ID: 40708542
@@ -166,6 +167,7 @@ Fall 2025 Practice Bot Configuration
 * FL
     * Basler daA1920-160um
     * config2.json
+    * configFL.json
     * calibration2.json
     * calibration40708556.json
     * ID: 40708556
@@ -175,6 +177,7 @@ Fall 2025 Practice Bot Configuration
 * center (really BL)
     * Basler da1280-54uc
     * config4.json
+    * configCenter.json
     * calibration4.json
     * calibration25249734.json
     * ID: 25249734 (serial number from Pylon app)
