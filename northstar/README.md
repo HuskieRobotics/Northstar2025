@@ -196,6 +196,7 @@ Fall 2025 Practice Bot Configuration
 
 Pose Debugging Ideas
 ===
+* verify on Schmit's Macbook with northstar test platform config
 * pull the latest code
 * export the AppleScript
 * associate the camera with the proper calibration file
