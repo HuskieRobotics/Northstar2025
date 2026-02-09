@@ -109,6 +109,7 @@ class NTConfigSource(ConfigSource):
         config_store.remote_config.camera_denoise = self._camera_denoise_sub.get()
         config_store.remote_config.fiducial_size_m = self._fiducial_size_m_sub.get()
         try:
+            print(self._tag_layout_sub.get());
             config_store.remote_config.tag_layout = json.loads(self._tag_layout_sub.get())
         except:
             config_store.remote_config.tag_layout = None
