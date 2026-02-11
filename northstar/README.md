@@ -194,6 +194,28 @@ Fall 2025 Practice Bot Configuration
     * product ID: 0xba06
     * location: 0x00200000
 
+Practice Bot New Configuration
+* BL
+    * Basler daA1920-160um
+    * config1.json
+    * calibration1.json
+    * calibration40708569.json
+    * ID: 40708569
+    * vendor ID: 0x2676
+    * product ID: 0xba06
+    * location: 0x00200000
+* BR
+    * Basler daA1920-160um
+    * config3.json
+    * configBR.json
+    * calibration1.json (!!! should be calibration3.json)
+    * calibration40708542.json
+    * ID: 40708542
+    * vendor ID: 0x2676
+    * product ID: 0xba06
+    * location: 0x02220000
+
+
 Pose Debugging Ideas
 ===
 * verify on Schmit's Macbook with northstar test platform config
@@ -207,7 +229,9 @@ Pose Debugging Ideas
 Future Work
 ===
 * √ explore camera configuration once lenses arrive
-* √ calibrate cameras
+* calibrate cameras
+    * try old Charuco board
+* adjust focus; glue in place
 * check performance of using pylon-cropped (need to update 3061-lib for new resolution as well)
 * I'm using the CoreML models provided by 6328.
 * We should learn how to create our own CoreML models.
