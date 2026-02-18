@@ -6,7 +6,7 @@
   "capture_impl": "pylon-color",
   "obj_detect_model": "models/wave_fuel_detect.mlpackage",
   "obj_detect_max_fps": -1,
-  "apriltags_enable": true,
+  "apriltags_enable": false,
   "objdetect_enable": true,
   "video_folder": "./videos/"
 }

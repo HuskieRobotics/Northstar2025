@@ -239,6 +239,35 @@ Practice Bot New Configuration
     * product ID: 0xba06
     * location: 0x02220000
 
+2026 Competition Bot Configuration
+* BL
+    * Basler daA1920-160um
+    * port 2
+    * configBL.json
+    * calibration40708556.json
+    * ID: 40708556
+    * vendor ID: 0x2676
+    * product ID: 0xba06
+    * location: 0x03200000
+* BR
+    * Basler daA1920-160um
+    * port 0
+    * configBR.json
+    * calibration40686739.json
+    * ID: 40686739
+    * vendor ID: 0x2676
+    * product ID: 0xba06
+    * location: 0x01200000
+* center
+    * Basler da1280-54uc
+    * port 4
+    * configCenter.json
+    * calibration25249734.json
+    * ID: 25249734
+    * vendor ID: 0x2676
+    * product ID: 0xba03
+    * location: 0x02210000
+
 
 Pose Debugging Ideas
 ===
