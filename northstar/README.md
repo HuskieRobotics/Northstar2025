@@ -103,6 +103,30 @@ Mac mini Configuration
     * toolbar -> open sharpness indicator
         * focus the camera and set the stop nut to preserve focus
         * https://docs.baslerweb.com/sharpness-indicator
+* add /bin/bash to full disk access
+    * details: https://apple.stackexchange.com/questions/376474/enabling-bin-bash-on-catalina-invisible-to-system-preferences-security-p
+* allow nnrobot to run all commands with sudo
+    * sudo visudo
+    * add
+        * username ALL=(ALL) NOPASSWD: ALL 
+    * details: https://stackoverflow.com/questions/30731782/run-sudo-as-specific-user-without-password
+* add .plist files to ~/Library/LaunchAgents
+    * details: https://stackoverflow.com/questions/6442364/running-script-upon-login-in-mac-os-x/13372744#13372744
+
+Mac mini Ports and USB Locations
+===
+* back (looking at ports from left to right)
+    * 0
+        * location: 0x01200000
+    * 1
+        * location: 0x00200000
+    * 2
+        * location: 0x03200000
+* front (looking at ports from left to right)
+    * 3
+        * location: 0x02220000
+    * 4
+        * location: 0x02210000
 
 Cameras
 ===
