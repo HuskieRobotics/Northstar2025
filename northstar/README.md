@@ -240,6 +240,7 @@ Practice Bot New Configuration
     * location: 0x02220000
 
 2026 Competition Bot Configuration
+---
 * BL
     * Basler daA1920-160um
     * port 2

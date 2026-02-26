@@ -34,6 +34,10 @@ class CalibrationSession:
         # Detect tags
         (corners, ids, rejected) = cv2.aruco.detectMarkers(image, self._aruco_dict, parameters=self._aruco_params)
         if len(corners) > 0:
+            if save:
+                    # save the raw image for debugging purposes; name the file calibration_ followed by the number of saved frames
+                    cv2.imwrite(f"./calibration/calibration_{len(self._all_charuco_corners)}.jpg", image)
+
             cv2.aruco.drawDetectedMarkers(image, corners)
 
             # Find Charuco corners
@@ -47,6 +51,7 @@ class CalibrationSession:
                 if save:
                     self._all_charuco_corners.append(charuco_corners)
                     self._all_charuco_ids.append(charuco_ids)
+                    
                     print("Saved calibration frame")
 
     def finish(self) -> None:

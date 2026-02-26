@@ -3,6 +3,7 @@
 
 northstar/videos/*.mkv
 northstar/models/*
+northstar/calibration/*
 
 ### C++ ###
 # Prerequisites
