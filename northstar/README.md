@@ -66,9 +66,12 @@ Development Notes
 Mac mini Configuration
 ===
 * purchased 2024 Mac mini (MU9D3LL/A)
-* System Settings -> Energy -> Start up automatically after a power failure
-    * this will auto power on the Mac mini when the robot is turned on
+* System Settings -> Energy ->
+    * Start up automatically after a power failure
+        * this will auto power on the Mac mini when the robot is turned on
+    * Prevent automatic sleeping when the display is off
 * Update to macOS Sequoia 15.7.1
+    * spare is macOS 26.2
 * Download and install Pylon 25.09 from Basler for cameras
 * Download and install GitHub Desktop
 * Download and install VS Code
@@ -86,8 +89,8 @@ Mac mini Configuration
 * build reenumerate (from ./reenumerate)
     * make
 * test reenumerate
-    * ./reenumerate -v 0x0C45,0x6366
-        * where 0x0C45 is vendorID and 0x6366 is productID
+    * ./reenumerate -v 0x2676,0xba06
+        * where 0x2676 is vendorID and 0xba06 is productID
         * output displays the location ID; for example:
             * Found "Arducam OV2311 USB Camera" @ 0x00110000
     * try to reenumerate camera using location ID:
@@ -104,6 +107,7 @@ Mac mini Configuration
         * focus the camera and set the stop nut to preserve focus
         * https://docs.baslerweb.com/sharpness-indicator
 * add /bin/bash to full disk access
+    * on macOS 26.2 add Terminal instead
     * details: https://apple.stackexchange.com/questions/376474/enabling-bin-bash-on-catalina-invisible-to-system-preferences-security-p
 * allow nnrobot to run all commands with sudo
     * sudo visudo
