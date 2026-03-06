@@ -104,6 +104,8 @@ if __name__ == "__main__":
         remote_config_source.update(config)
         success, image = capture.get_frame(config)
         timestamp = time.time()
+        # get a time string with current date and time with seconds
+        timeString = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(timestamp))
 
         # Check power metrics from background thread
         if time.time() - power_metrics_last_publish > POWER_METRICS_INTERVAL:
@@ -126,16 +128,16 @@ if __name__ == "__main__":
             and config.remote_config.timestamp > 0
         )
         if should_record and not was_recording:
-            print("Starting recording")
+            print(timeString, "Starting recording")
             video_writer.start(config, len(image.shape) == 2)
         elif not should_record and was_recording:
-            print("Stopping recording")
+            print(timeString, "Stopping recording")
             video_writer.stop()
         was_recording = should_record
 
         # Exit if no frame
         if not success:
-            print ("No frame received, waiting for capture")
+            print(timeString, "No frame received, waiting for capture")
             time.sleep(0.5)
             continue
 
@@ -184,7 +186,7 @@ if __name__ == "__main__":
                     apriltags_frame_count += 1
                     if time.time() - apriltags_last_print > 1:
                         apriltags_last_print = time.time()
-                        if DEBUG: print("Running AprilTag pipeline at", apriltags_frame_count, "fps")
+                        if DEBUG: print(timeString, "Running AprilTag pipeline at", apriltags_frame_count, "fps")
                         output_publisher.send_apriltag_fps(config, timestamp_out, apriltags_frame_count)
                         apriltags_frame_count = 0
 
@@ -215,7 +217,7 @@ if __name__ == "__main__":
                     objdetect_frame_count += 1
                     if time.time() - objdetect_last_print > 1:
                         objdetect_last_print = time.time()
-                        if DEBUG: print("Running object detection pipeline at", objdetect_frame_count, "fps")
+                        if DEBUG: print(timeString, "Running object detection pipeline at", objdetect_frame_count, "fps")
                         output_publisher.send_objdetect_fps(config, timestamp, objdetect_frame_count)
                         objdetect_frame_count = 0
 

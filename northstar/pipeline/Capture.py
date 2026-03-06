@@ -162,8 +162,9 @@ class PylonCapture(Capture):
     _last_config: ConfigStore
 
     def get_frame(self, config_store: ConfigStore) -> Tuple[bool, cv2.Mat]:
+        timeString = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(timestamp))
         if self._camera != None and self._config_changed(self._last_config, config_store):
-            print("Config changed, restarting")
+            print(timeString, "Config changed, restarting")
             sys.exit(0)
 
         if self._camera is None:
@@ -174,9 +175,9 @@ class PylonCapture(Capture):
                     if device_info.GetSerialNumber() == config_store.remote_config.camera_id:
                         self._device = pylon.TlFactory.GetInstance().CreateDevice(device_info)
             if self._device == None:
-                print("Unable to find device")
+                print(timeString, "Unable to find device")
             else:
-                print("Starting capture session")
+                print(timeString, "Starting capture session")
                 self._camera = pylon.InstantCamera(self._device)
                 self._camera.Open()
                 self._camera.GrabLoopThreadPriorityOverride = True
@@ -213,7 +214,7 @@ class PylonCapture(Capture):
                     self._camera.GetNodeMap().GetNode("ReverseY").SetValue(True)
 
                 self._camera.StartGrabbing(pylon.GrabStrategy_LatestImages)
-                print("Capture session ready")
+                print(timeString, "Capture session ready")
 
         self._last_config = ConfigStore(
             dataclasses.replace(config_store.local_config), dataclasses.replace(config_store.remote_config)
