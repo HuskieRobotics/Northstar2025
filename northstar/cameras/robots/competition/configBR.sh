@@ -5,6 +5,6 @@ cd ~/Documents/GitHub/Northstar2025/northstar;
 source ./venv/bin/activate;
 while [ True ];
    do /Users/nnrobot/Documents/GitHub/Northstar2025/northstar/reenumerate/reenumerate -v -l 0x01200000
-   nice -20 python3 __init__.py --config cameras/robots/competition/configBR.json --calibration cameras/calibrations/calibration40686739.yml;
+   nice -20 python3 __init__.py --config cameras/robots/competition/configBR.json --calibration cameras/calibrations/calibration40708569.yml;
    sleep 1;
 done
