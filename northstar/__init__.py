@@ -27,7 +27,7 @@ from pipeline.Capture import CAPTURE_IMPLS
 from power_metrics import run_power_metrics
 
 if __name__ == "__main__":
-    DEBUG = False
+    DEBUG = True
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", default="config.json")
