@@ -29,6 +29,7 @@ from power_metrics import run_power_metrics
 if __name__ == "__main__":
     DEBUG = True
 
+    sys.stdout.reconfigure(line_buffering=True)
     timeString = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
     print(timeString, "Starting Northstar...")
 
@@ -117,8 +118,8 @@ if __name__ == "__main__":
                     metrics = latest_power_metrics
                     output_publisher.send_power_metrics(config, timestamp, metrics)
                     power_metrics_last_publish = time.time()
-                    if metrics:
-                        if DEBUG: print(f"Power Metrics - CPU: {metrics['cpu_power']}, GPU: {metrics['gpu_power']}, ANE: {metrics['ane_power']}, Pressure: {metrics['pressure_level']}")
+                    # if metrics:
+                        # if DEBUG: print(f"Power Metrics - CPU: {metrics['cpu_power']}, GPU: {metrics['gpu_power']}, ANE: {metrics['ane_power']}, Pressure: {metrics['pressure_level']}")
 
 
 
