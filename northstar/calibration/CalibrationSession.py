@@ -7,6 +7,7 @@
 
 import datetime
 import os
+import time
 from typing import List
 
 import cv2
@@ -15,18 +16,15 @@ from config.ConfigSource import FileConfigSource
 
 
 class CalibrationSession:
-    _all_charuco_corners: List[numpy.ndarray] = []
-    _all_charuco_ids: List[numpy.ndarray] = []
+    _frames_saved: int = 0
     _imsize = None
-
-    NEW_CALIBRATION_FILENAME = "calibration_new.yml"
 
     def __init__(self) -> None:
         self._aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_1000)
         self._aruco_params = cv2.aruco.DetectorParameters()
         self._charuco_board = cv2.aruco.CharucoBoard((15, 15), 0.030, 0.020, self._aruco_dict)
 
-    def process_frame(self, image: cv2.Mat, save: bool) -> None:
+    def process_frame(self, image: cv2.Mat) -> None:
         # Get image size
         if self._imsize == None:
             self._imsize = (image.shape[0], image.shape[1])
@@ -34,9 +32,10 @@ class CalibrationSession:
         # Detect tags
         (corners, ids, rejected) = cv2.aruco.detectMarkers(image, self._aruco_dict, parameters=self._aruco_params)
         if len(corners) > 0:
-            if save:
-                    # save the raw image for debugging purposes; name the file calibration_ followed by the number of saved frames
-                    cv2.imwrite(f"./calibration/calibration_{len(self._all_charuco_corners)}.jpg", image)
+            # save the raw image for debugging purposes; name the file calibration_ followed by the number of saved frames
+            cv2.imwrite(f"./calibration/calibration_{self._frames_saved}.jpg", image)
+            self._frames_saved += 1
+            time.sleep(1.0) # capture a frame every second
 
             cv2.aruco.drawDetectedMarkers(image, corners)
 
@@ -46,34 +45,3 @@ class CalibrationSession:
             )
             if retval:
                 cv2.aruco.drawDetectedCornersCharuco(image, charuco_corners, charuco_ids)
-
-                # Save corners
-                if save:
-                    self._all_charuco_corners.append(charuco_corners)
-                    self._all_charuco_ids.append(charuco_ids)
-                    
-                    print("Saved calibration frame")
-
-    def finish(self) -> None:
-        if len(self._all_charuco_corners) == 0:
-            print("ERROR: No calibration data")
-            return
-
-        if os.path.exists(self.NEW_CALIBRATION_FILENAME):
-            os.remove(self.NEW_CALIBRATION_FILENAME)
-
-        (retval, camera_matrix, distortion_coefficients, rvecs, tvecs) = cv2.aruco.calibrateCameraCharuco(
-            self._all_charuco_corners, self._all_charuco_ids, self._charuco_board, self._imsize, None, None
-        )
-
-        if retval:
-            calibration_store = cv2.FileStorage(self.NEW_CALIBRATION_FILENAME, cv2.FILE_STORAGE_WRITE)
-            calibration_store.write("calibration_date", str(datetime.datetime.now()))
-            calibration_store.write("mean_reprojection_error", str(retval))
-            calibration_store.write("camera_resolution", self._imsize)
-            calibration_store.write("camera_matrix", camera_matrix)
-            calibration_store.write("distortion_coefficients", distortion_coefficients)
-            calibration_store.release()
-            print("Calibration finished")
-        else:
-            print("ERROR: Calibration failed")
