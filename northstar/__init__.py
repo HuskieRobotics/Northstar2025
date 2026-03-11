@@ -29,6 +29,9 @@ from power_metrics import run_power_metrics
 if __name__ == "__main__":
     DEBUG = True
 
+    timeString = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
+    print(timeString, "Starting Northstar...")
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", default="config.json")
     parser.add_argument("--calibration", default="calibration.yml")
