@@ -284,6 +284,11 @@ Pose Debugging Ideas
 * change the resolution of mono cameras to 1600x1200
 * calibrate all of the cameras
 
+No Frames Debugging
+====
+* according to System Information, each camera is getting 4.48W (896mA) and 5 Gb/s
+* 
+
 Future Work
 ===
 * √ explore camera configuration once lenses arrive
