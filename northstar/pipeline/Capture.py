@@ -174,11 +174,11 @@ class PylonCapture(Capture):
                 device_infos: list[pylon.DeviceInfo] = pylon.TlFactory.GetInstance().EnumerateDevices()
                 self._device: Union[None, any] = None  # Native object type
                 for device_info in device_infos:
-                    print(timeString, "Found device: ", device_info.GetSerialNumber())
+                    print(timeString, "Found local device: ", device_info.GetSerialNumber())
                     if device_info.GetSerialNumber() == config_store.remote_config.camera_id:
                         self._device = pylon.TlFactory.GetInstance().CreateDevice(device_info)
             if self._device == None:
-                print(timeString, "Unable to find device")
+                print(timeString, "Unable to find matching device")
             else:
                 print(timeString, "Starting capture session")
                 self._camera = pylon.InstantCamera(self._device)
