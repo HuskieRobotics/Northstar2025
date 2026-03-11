@@ -151,7 +151,7 @@ if __name__ == "__main__":
                 calibration_session_server = MjpegServer()
                 calibration_session_server.start(7999)
             was_calibrating = True
-            calibration_session.process_frame(image)
+            calibration_session.process_frame(image, config.local_config.device_id)
             calibration_session_server.set_frame(image)
 
         elif was_calibrating:
