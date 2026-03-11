@@ -20,6 +20,9 @@ class CalibrationSession:
     _imsize = None
 
     def __init__(self) -> None:
+        self._aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_1000)
+        self._aruco_params = cv2.aruco.DetectorParameters()
+        self._charuco_board = cv2.aruco.CharucoBoard((15, 15), 0.030, 0.020, self._aruco_dict)
         self._timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
 
     def process_frame(self, image: cv2.Mat) -> None:
@@ -27,14 +30,14 @@ class CalibrationSession:
         if self._imsize == None:
             self._imsize = (image.shape[0], image.shape[1])
 
+        # save the raw image for debugging purposes; name the file calibration_ followed by the number of saved frames
+        cv2.imwrite(f"./calibration/{self._timestamp}/calibration_{self._frames_saved}.jpg", image)
+        self._frames_saved += 1
+        time.sleep(1.0) # capture a frame every second
+
         # Detect tags
         (corners, ids, rejected) = cv2.aruco.detectMarkers(image, self._aruco_dict, parameters=self._aruco_params)
-        if len(corners) > 0:
-            # save the raw image for debugging purposes; name the file calibration_ followed by the number of saved frames
-            cv2.imwrite(f"./calibration/{self._timestamp}/calibration_{self._frames_saved}.jpg", image)
-            self._frames_saved += 1
-            time.sleep(1.0) # capture a frame every second
-
+        if len(corners) > 0:            
             cv2.aruco.drawDetectedMarkers(image, corners)
 
             # Find Charuco corners
