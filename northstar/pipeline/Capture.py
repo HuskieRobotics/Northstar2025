@@ -174,7 +174,7 @@ class PylonCapture(Capture):
                 device_infos: list[pylon.DeviceInfo] = pylon.TlFactory.GetInstance().EnumerateDevices()
                 self._device: Union[None, any] = None  # Native object type
                 for device_info in device_infos:
-                    # FIXME: log all cameras that are found by Pylon
+                    print(timeString, "Found device: ", device_info.GetSerialNumber())
                     if device_info.GetSerialNumber() == config_store.remote_config.camera_id:
                         self._device = pylon.TlFactory.GetInstance().CreateDevice(device_info)
             if self._device == None:
