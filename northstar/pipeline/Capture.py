@@ -235,21 +235,24 @@ class PylonCapture(Capture):
         else:
             try:
                 with self._camera.RetrieveResult(50, pylon.TimeoutHandling_ThrowException) as grab_result:
-                    if grab_result.GrabSucceeded():
+                    if grab_result and grab_result.GrabSucceeded():
                         self._last_failed_time = None
                         if self._converter == None:
                             return True, grab_result.Array
                         else:
                             return True, self._converter.Convert(grab_result).Array
-                    else:
+                    elif grab_result:
                         print(timeString, "Grab Failed: ", grab_result.GetErrorCode(), " ", grab_result.GetErrorDescription())
                         return False, None
+                    else:
+                        print(timeString, "Grab Result is None")
+                        return False, None
             except Exception:
-                print("Error when capturing frame:", traceback.format_exc())
+                print(timeString, "Error when capturing frame:", traceback.format_exc())
                 if self._last_failed_time == None:
                     self._last_failed_time =  time.time()
                 elif time.time() - self._last_failed_time > PylonCapture.failed_time_restart_timeout:
-                    print("Multiple consecutive capture failures, restarting")
+                    print(timeString, "Multiple consecutive capture failures, restarting")
                     sys.exit(0)
                 return False, None
 
