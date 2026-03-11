@@ -23,7 +23,7 @@ class CalibrationSession:
         self._aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_1000)
         self._aruco_params = cv2.aruco.DetectorParameters()
         self._charuco_board = cv2.aruco.CharucoBoard((15, 15), 0.030, 0.020, self._aruco_dict)
-        self._timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
+        self._timestamp = time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime(time.time()))
 
     def process_frame(self, image: cv2.Mat) -> None:
         # Get image size
@@ -31,6 +31,9 @@ class CalibrationSession:
             self._imsize = (image.shape[0], image.shape[1])
 
         # save the raw image for debugging purposes; name the file calibration_ followed by the number of saved frames
+        # make a new folder for this calibration session using the timestamp
+        if self._frames_saved == 0:
+            os.makedirs(f"./calibration/{self._timestamp}", exist_ok=True)
         cv2.imwrite(f"./calibration/{self._timestamp}/calibration_{self._frames_saved}.jpg", image)
         self._frames_saved += 1
         time.sleep(1.0) # capture a frame every second
