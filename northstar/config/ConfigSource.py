@@ -77,6 +77,7 @@ class NTConfigSource(ConfigSource):
             )
             print (timeString, "Subscribing to NT config topics...")
             self._camera_id_sub = nt_table.getStringTopic("camera_id").subscribe(RemoteConfig.camera_id)
+            print(timeString, "Camera ID:", self._camera_id_sub.get())
             self._camera_resolution_width_sub = nt_table.getIntegerTopic("camera_resolution_width").subscribe(
                 RemoteConfig.camera_resolution_width
             )
@@ -104,7 +105,6 @@ class NTConfigSource(ConfigSource):
 
         # Read config data
         config_store.remote_config.camera_id = self._camera_id_sub.get()
-        print(timeString, "Camera ID:", config_store.remote_config.camera_id)
         config_store.remote_config.camera_resolution_width = self._camera_resolution_width_sub.get()
         config_store.remote_config.camera_resolution_height = self._camera_resolution_height_sub.get()
         config_store.remote_config.camera_auto_exposure = self._camera_auto_exposure_sub.get()
