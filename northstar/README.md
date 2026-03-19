@@ -320,4 +320,9 @@ Future Work
 * get rid of poseestimation and taganglecalculator pipelines
 
     
-
+Calibration
+===
+* Calib Camera Calibration app
+    * Optimize Cameras
+        * OpenCV model with f, cx, cy, k1, k2, k3, p1, p2
+        * details: https://docs.opencv.org/3.4/d9/d0c/group__calib3d.html#ga3207604e4b1a1758aa66acb6ed5aa65d
