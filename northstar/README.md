@@ -265,12 +265,30 @@ Practice Bot New Configuration
     * location: 0x01200000
 * center
     * Basler da1280-54uc
-    * port 4
+    * port 1
     * configCenter.json
     * calibration25249734.json
     * ID: 25249734
     * vendor ID: 0x2676
     * product ID: 0xba03
+    * location: 0x00200000
+* BCL
+    * Basler daA1920-160um
+    * port 3
+    * configBCL.json
+    * calibration40777404.json
+    * ID: 40777404
+    * vendor ID: 0x2676
+    * product ID: 0xba06
+    * location: 0x02220000
+* BCR
+    * Basler daA1920-160um
+    * port 4
+    * configBCR.json
+    * calibration40777399.json
+    * ID: 40777399
+    * vendor ID: 0x2676
+    * product ID: 0xba06
     * location: 0x02210000
 
 
