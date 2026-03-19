@@ -6,6 +6,7 @@
 # the root directory of this project.
 
 import dataclasses
+import os
 import subprocess
 import sys
 import time
@@ -252,7 +253,8 @@ class PylonCapture(Capture):
                             self._last_failed_time =  time.time()
                         elif time.time() - self._last_failed_time > PylonCapture.failed_time_restart_timeout:
                             print(timeString, "Multiple consecutive capture failures, restarting")
-                            sys.exit(0)
+                            # use os._exit to avoid cleanup that can cause hangs?
+                            os._exit()
                         
                         return False, None
             except Exception:
@@ -261,7 +263,7 @@ class PylonCapture(Capture):
                     self._last_failed_time =  time.time()
                 elif time.time() - self._last_failed_time > PylonCapture.failed_time_restart_timeout:
                     print(timeString, "Multiple consecutive capture failures, restarting")
-                    sys.exit(0)
+                    os._exit()
                 return False, None
 
 
