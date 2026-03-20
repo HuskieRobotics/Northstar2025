@@ -258,8 +258,8 @@ Practice Bot New Configuration
     * Basler daA1920-160um
     * port 0
     * configBR.json
-    * calibration40686739.json
-    * ID: 40686739
+    * calibration40708542.json
+    * ID: 40708542
     * vendor ID: 0x2676
     * product ID: 0xba06
     * location: 0x01200000
