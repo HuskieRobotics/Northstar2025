@@ -8,6 +8,7 @@
 import json
 
 import cv2
+import time
 import ntcore
 import numpy
 from config.config import ConfigStore, RemoteConfig
@@ -68,11 +69,13 @@ class NTConfigSource(ConfigSource):
     _match_number_sub: ntcore.IntegerSubscriber
 
     def update(self, config_store: ConfigStore) -> None:
+        timeString = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
         # Initialize subscribers on first call
         if not self._init_complete:
             nt_table = ntcore.NetworkTableInstance.getDefault().getTable(
                 "/" + config_store.local_config.device_id + "/config"
             )
+            print (timeString, "Subscribing to NT config topics...")
             self._camera_id_sub = nt_table.getStringTopic("camera_id").subscribe(RemoteConfig.camera_id)
             self._camera_resolution_width_sub = nt_table.getIntegerTopic("camera_resolution_width").subscribe(
                 RemoteConfig.camera_resolution_width

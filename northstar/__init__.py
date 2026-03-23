@@ -27,6 +27,12 @@ from pipeline.Capture import CAPTURE_IMPLS
 from power_metrics import run_power_metrics
 
 if __name__ == "__main__":
+    DEBUG = True
+
+    sys.stdout.reconfigure(line_buffering=True)
+    timeString = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
+    print(timeString, "Starting Northstar...")
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", default="config.json")
     parser.add_argument("--calibration", default="calibration.yml")
@@ -102,6 +108,8 @@ if __name__ == "__main__":
         remote_config_source.update(config)
         success, image = capture.get_frame(config)
         timestamp = time.time()
+        # get a time string with current date and time with seconds
+        timeString = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(timestamp))
 
         # Check power metrics from background thread
         if time.time() - power_metrics_last_publish > POWER_METRICS_INTERVAL:
@@ -110,8 +118,8 @@ if __name__ == "__main__":
                     metrics = latest_power_metrics
                     output_publisher.send_power_metrics(config, timestamp, metrics)
                     power_metrics_last_publish = time.time()
-                    if metrics:
-                        print(f"Power Metrics - CPU: {metrics['cpu_power']}, GPU: {metrics['gpu_power']}, ANE: {metrics['ane_power']}, Pressure: {metrics['pressure_level']}")
+                    # if metrics:
+                        # if DEBUG: print(f"Power Metrics - CPU: {metrics['cpu_power']}, GPU: {metrics['gpu_power']}, ANE: {metrics['ane_power']}, Pressure: {metrics['pressure_level']}")
 
 
 
@@ -124,17 +132,17 @@ if __name__ == "__main__":
             and config.remote_config.timestamp > 0
         )
         if should_record and not was_recording:
-            print("Starting recording")
+            print(timeString, "Starting recording")
             video_writer.start(config, len(image.shape) == 2)
         elif not should_record and was_recording:
-            print("Stopping recording")
+            print(timeString, "Stopping recording")
             video_writer.stop()
         was_recording = should_record
 
         # Exit if no frame
         if not success:
-            print ("No frame received, waiting for capture")
-            time.sleep(0.5)
+            print(timeString, "No frame received, waiting for capture")
+            time.sleep(0.05)
             continue
 
         if calibration_command_source.get_calibrating(config):
@@ -143,12 +151,11 @@ if __name__ == "__main__":
                 calibration_session_server = MjpegServer()
                 calibration_session_server.start(7999)
             was_calibrating = True
-            calibration_session.process_frame(image, calibration_command_source.get_capture_flag(config))
+            calibration_session.process_frame(image, config.local_config.device_id)
             calibration_session_server.set_frame(image)
 
         elif was_calibrating:
-            # Finish calibration
-            calibration_session.finish()
+            # restart after calibration
             sys.exit(0)
 
         elif config.local_config.has_calibration:
@@ -182,7 +189,7 @@ if __name__ == "__main__":
                     apriltags_frame_count += 1
                     if time.time() - apriltags_last_print > 1:
                         apriltags_last_print = time.time()
-                        print("Running AprilTag pipeline at", apriltags_frame_count, "fps")
+                        if DEBUG: print(timeString, "Running AprilTag pipeline at", apriltags_frame_count, "fps")
                         output_publisher.send_apriltag_fps(config, timestamp_out, apriltags_frame_count)
                         apriltags_frame_count = 0
 
@@ -213,7 +220,7 @@ if __name__ == "__main__":
                     objdetect_frame_count += 1
                     if time.time() - objdetect_last_print > 1:
                         objdetect_last_print = time.time()
-                        print("Running object detection pipeline at", objdetect_frame_count, "fps")
+                        if DEBUG: print(timeString, "Running object detection pipeline at", objdetect_frame_count, "fps")
                         output_publisher.send_objdetect_fps(config, timestamp, objdetect_frame_count)
                         objdetect_frame_count = 0
 

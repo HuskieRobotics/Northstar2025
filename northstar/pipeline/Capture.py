@@ -6,6 +6,7 @@
 # the root directory of this project.
 
 import dataclasses
+import os
 import subprocess
 import sys
 import time
@@ -151,6 +152,7 @@ class AVFoundationCapture(Capture):
 
 class PylonCapture(Capture):
     """Reads from a Basler camera using pylon."""
+    failed_time_restart_timeout = 3
 
     def __init__(self, mode: str = "", is_flipped: bool = False) -> None:
         self._mode = mode
@@ -160,23 +162,27 @@ class PylonCapture(Capture):
     _device: Union[None, pylon.DeviceInfo] = None
     _converter: Union[None, pylon.ImageFormatConverter] = None
     _last_config: ConfigStore
+    _last_failed_time: Union[None, float] = None
 
     def get_frame(self, config_store: ConfigStore) -> Tuple[bool, cv2.Mat]:
+        timeString = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
         if self._camera != None and self._config_changed(self._last_config, config_store):
-            print("Config changed, restarting")
+            print(timeString, "Config changed, restarting")
             sys.exit(0)
 
         if self._camera is None:
             if self._device == None:
                 device_infos: list[pylon.DeviceInfo] = pylon.TlFactory.GetInstance().EnumerateDevices()
                 self._device: Union[None, any] = None  # Native object type
+                print(timeString, "Looking for camera: ", config_store.remote_config.camera_id)
                 for device_info in device_infos:
+                    print(timeString, "Found local device: ", device_info.GetSerialNumber())
                     if device_info.GetSerialNumber() == config_store.remote_config.camera_id:
                         self._device = pylon.TlFactory.GetInstance().CreateDevice(device_info)
             if self._device == None:
-                print("Unable to find device")
+                print(timeString, "Unable to find matching device")
             else:
-                print("Starting capture session")
+                print(timeString, "Starting capture session")
                 self._camera = pylon.InstantCamera(self._device)
                 self._camera.Open()
                 self._camera.GrabLoopThreadPriorityOverride = True
@@ -184,7 +190,7 @@ class PylonCapture(Capture):
                 self._camera.InternalGrabEngineThreadPriorityOverride = True
                 self._camera.InternalGrabEngineThreadPriority = 95
                 self._camera.GetNodeMap().GetNode("DeviceLinkThroughputLimitMode").SetValue("On")
-                max_bandwidth = int(150e6) if self._mode == "color" else int(250e6)
+                max_bandwidth = int(140e6) if self._mode == "color" else int(140e6)
                 self._camera.GetNodeMap().GetNode("DeviceLinkThroughputLimit").SetValue(max_bandwidth)
                 self._camera.GetNodeMap().GetNode("ExposureAuto").SetValue("Off")
                 self._camera.GetNodeMap().GetNode("AcquisitionMode").SetValue("Continuous")
@@ -202,6 +208,13 @@ class PylonCapture(Capture):
                     self._converter.OutputPixelFormat = pylon.PixelType_RGB8packed
                     self._converter.OutputBitAlignment = pylon.OutputBitAlignment_MsbAligned
 
+                    # Disable auto white balance
+                    self._camera.GetNodeMap().GetNode("BalanceWhiteAuto").SetValue("Off")
+                    self._camera.BalanceRatioSelector.SetValue("Red")
+                    self._camera.BalanceRatio.SetValue(1.2)
+                    self._camera.BalanceRatioSelector.SetValue("Blue")
+                    self._camera.BalanceRatio.SetValue(1.2)
+
                 elif self._mode == "cropped":
                     self._camera.GetNodeMap().GetNode("Width").SetValue(1600)
                     self._camera.GetNodeMap().GetNode("Height").SetValue(1200)
@@ -213,7 +226,7 @@ class PylonCapture(Capture):
                     self._camera.GetNodeMap().GetNode("ReverseY").SetValue(True)
 
                 self._camera.StartGrabbing(pylon.GrabStrategy_LatestImages)
-                print("Capture session ready")
+                print(timeString, "Capture session ready")
 
         self._last_config = ConfigStore(
             dataclasses.replace(config_store.local_config), dataclasses.replace(config_store.remote_config)
@@ -223,17 +236,34 @@ class PylonCapture(Capture):
             return False, None
         else:
             try:
-                with self._camera.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException) as grab_result:
-                    if grab_result.GrabSucceeded():
+                with self._camera.RetrieveResult(50, pylon.TimeoutHandling_ThrowException) as grab_result:
+                    if grab_result and grab_result.GrabSucceeded():
+                        self._last_failed_time = None
                         if self._converter == None:
                             return True, grab_result.Array
                         else:
                             return True, self._converter.Convert(grab_result).Array
                     else:
+                        if grab_result:
+                            print(timeString, "Grab Failed: ", grab_result.GetErrorCode(), " ", grab_result.GetErrorDescription())
+                        else:
+                            print(timeString, "Grab Result is None")
+                        
+                        if self._last_failed_time == None:
+                            self._last_failed_time =  time.time()
+                        elif time.time() - self._last_failed_time > PylonCapture.failed_time_restart_timeout:
+                            print(timeString, "Multiple consecutive capture failures, restarting")
+                            sys.exit(0)
+                        
                         return False, None
             except Exception:
-                print("Error when capturing frame:", traceback.format_exc())
-                sys.exit(0)
+                print(timeString, "Error when capturing frame:", traceback.format_exc())
+                if self._last_failed_time == None:
+                    self._last_failed_time =  time.time()
+                elif time.time() - self._last_failed_time > PylonCapture.failed_time_restart_timeout:
+                    print(timeString, "Multiple consecutive capture failures, restarting")
+                    sys.exit(0)
+                return False, None
 
 
 class GStreamerCapture(Capture):

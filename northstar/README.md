@@ -66,9 +66,12 @@ Development Notes
 Mac mini Configuration
 ===
 * purchased 2024 Mac mini (MU9D3LL/A)
-* System Settings -> Energy -> Start up automatically after a power failure
-    * this will auto power on the Mac mini when the robot is turned on
+* System Settings -> Energy ->
+    * Start up automatically after a power failure
+        * this will auto power on the Mac mini when the robot is turned on
+    * Prevent automatic sleeping when the display is off
 * Update to macOS Sequoia 15.7.1
+    * spare is macOS 26.2
 * Download and install Pylon 25.09 from Basler for cameras
 * Download and install GitHub Desktop
 * Download and install VS Code
@@ -86,8 +89,8 @@ Mac mini Configuration
 * build reenumerate (from ./reenumerate)
     * make
 * test reenumerate
-    * ./reenumerate -v 0x0C45,0x6366
-        * where 0x0C45 is vendorID and 0x6366 is productID
+    * ./reenumerate -v 0x2676,0xba06
+        * where 0x2676 is vendorID and 0xba06 is productID
         * output displays the location ID; for example:
             * Found "Arducam OV2311 USB Camera" @ 0x00110000
     * try to reenumerate camera using location ID:
@@ -103,6 +106,31 @@ Mac mini Configuration
     * toolbar -> open sharpness indicator
         * focus the camera and set the stop nut to preserve focus
         * https://docs.baslerweb.com/sharpness-indicator
+* add /bin/bash to full disk access
+    * on macOS 26.2 add Terminal instead
+    * details: https://apple.stackexchange.com/questions/376474/enabling-bin-bash-on-catalina-invisible-to-system-preferences-security-p
+* allow nnrobot to run all commands with sudo
+    * sudo visudo
+    * add
+        * username ALL=(ALL) NOPASSWD: ALL 
+    * details: https://stackoverflow.com/questions/30731782/run-sudo-as-specific-user-without-password
+* add .plist files to ~/Library/LaunchAgents
+    * details: https://stackoverflow.com/questions/6442364/running-script-upon-login-in-mac-os-x/13372744#13372744
+
+Mac mini Ports and USB Locations
+===
+* back (looking at ports from left to right)
+    * 0
+        * location: 0x01200000
+    * 1
+        * location: 0x00200000
+    * 2
+        * location: 0x03200000
+* front (looking at ports from left to right)
+    * 3
+        * location: 0x02220000
+    * 4
+        * location: 0x02210000
 
 Cameras
 ===
@@ -194,6 +222,76 @@ Fall 2025 Practice Bot Configuration
     * product ID: 0xba06
     * location: 0x00200000
 
+Practice Bot New Configuration
+* BL
+    * Basler daA1920-160um
+    * config1.json
+    * calibration1.json
+    * calibration40708569.json
+    * ID: 40708569
+    * vendor ID: 0x2676
+    * product ID: 0xba06
+    * location: 0x00200000
+* BR
+    * Basler daA1920-160um
+    * config3.json
+    * configBR.json
+    * calibration1.json (!!! should be calibration3.json)
+    * calibration40708542.json
+    * ID: 40708542
+    * vendor ID: 0x2676
+    * product ID: 0xba06
+    * location: 0x02220000
+
+2026 Competition Bot Configuration
+---
+* BL
+    * Basler daA1920-160um
+    * port 2
+    * configBL.json
+    * calibration40708556.json
+    * ID: 40708556
+    * vendor ID: 0x2676
+    * product ID: 0xba06
+    * location: 0x03200000
+* BR
+    * Basler daA1920-160um
+    * port 0
+    * configBR.json
+    * calibration40708542.json
+    * ID: 40708542
+    * vendor ID: 0x2676
+    * product ID: 0xba06
+    * location: 0x01200000
+* center
+    * Basler da1280-54uc
+    * port 1
+    * configCenter.json
+    * calibration25249734.json
+    * ID: 25249734
+    * vendor ID: 0x2676
+    * product ID: 0xba03
+    * location: 0x00200000
+* BCL
+    * Basler daA1920-160um
+    * port 3
+    * configBCL.json
+    * calibration40777404.json
+    * ID: 40777404
+    * vendor ID: 0x2676
+    * product ID: 0xba06
+    * location: 0x02220000
+* BCR
+    * Basler daA1920-160um
+    * port 4
+    * configBCR.json
+    * calibration40777399.json
+    * ID: 40777399
+    * vendor ID: 0x2676
+    * product ID: 0xba06
+    * location: 0x02210000
+
+
 Pose Debugging Ideas
 ===
 * verify on Schmit's Macbook with northstar test platform config
@@ -204,10 +302,17 @@ Pose Debugging Ideas
 * change the resolution of mono cameras to 1600x1200
 * calibrate all of the cameras
 
+No Frames Debugging
+====
+* according to System Information, each camera is getting 4.48W (896mA) and 5 Gb/s
+* 
+
 Future Work
 ===
 * √ explore camera configuration once lenses arrive
-* √ calibrate cameras
+* calibrate cameras
+    * try old Charuco board
+* adjust focus; glue in place
 * check performance of using pylon-cropped (need to update 3061-lib for new resolution as well)
 * I'm using the CoreML models provided by 6328.
 * We should learn how to create our own CoreML models.
@@ -215,4 +320,9 @@ Future Work
 * get rid of poseestimation and taganglecalculator pipelines
 
     
-
+Calibration
+===
+* Calib Camera Calibration app
+    * Optimize Cameras
+        * OpenCV model with f, cx, cy, k1, k2, k3, p1, p2
+        * details: https://docs.opencv.org/3.4/d9/d0c/group__calib3d.html#ga3207604e4b1a1758aa66acb6ed5aa65d
