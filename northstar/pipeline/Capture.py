@@ -190,7 +190,7 @@ class PylonCapture(Capture):
                 self._camera.InternalGrabEngineThreadPriorityOverride = True
                 self._camera.InternalGrabEngineThreadPriority = 95
                 self._camera.GetNodeMap().GetNode("DeviceLinkThroughputLimitMode").SetValue("On")
-                max_bandwidth = int(140e6) if self._mode == "color" else int(140e6)
+                max_bandwidth = int(115e6) if self._mode == "color" else int(115e6)
                 self._camera.GetNodeMap().GetNode("DeviceLinkThroughputLimit").SetValue(max_bandwidth)
                 self._camera.GetNodeMap().GetNode("ExposureAuto").SetValue("Off")
                 self._camera.GetNodeMap().GetNode("AcquisitionMode").SetValue("Continuous")
@@ -262,7 +262,7 @@ class PylonCapture(Capture):
                     self._last_failed_time =  time.time()
                 elif time.time() - self._last_failed_time > PylonCapture.failed_time_restart_timeout:
                     print(timeString, "Multiple consecutive capture failures, restarting")
-                    sys.exit(0)
+                    os._exit(0)
                 return False, None
 
 
