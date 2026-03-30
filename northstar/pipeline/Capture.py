@@ -225,7 +225,7 @@ class PylonCapture(Capture):
                     self._camera.GetNodeMap().GetNode("ReverseX").SetValue(True)
                     self._camera.GetNodeMap().GetNode("ReverseY").SetValue(True)
 
-                self._camera.StartGrabbing(pylon.GrabStrategy_LatestImages)
+                self._camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
                 print(timeString, "Capture session ready")
 
         self._last_config = ConfigStore(
@@ -236,7 +236,7 @@ class PylonCapture(Capture):
             return False, None
         else:
             try:
-                with self._camera.RetrieveResult(50, pylon.TimeoutHandling_ThrowException) as grab_result:
+                with self._camera.RetrieveResult(100, pylon.TimeoutHandling_Return) as grab_result:
                     if grab_result and grab_result.GrabSucceeded():
                         self._last_failed_time = None
                         if self._converter == None:
@@ -262,6 +262,7 @@ class PylonCapture(Capture):
                     self._last_failed_time =  time.time()
                 elif time.time() - self._last_failed_time > PylonCapture.failed_time_restart_timeout:
                     print(timeString, "Multiple consecutive capture failures, restarting")
+                    self._camera.DestroyDevice()
                     os._exit(0)
                 return False, None
 
