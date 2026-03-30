@@ -142,7 +142,7 @@ if __name__ == "__main__":
         # Exit if no frame
         if not success:
             print(timeString, "No frame received, waiting for capture")
-            time.sleep(0.05)
+            time.sleep(1.0)
             continue
 
         if calibration_command_source.get_calibrating(config):
